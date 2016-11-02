@@ -11,7 +11,7 @@ var PRIORITIES = {
 
 function clone(collection) {
     return collection.map(function (person) {
-        return Object.assign(person);
+        return Object.assign({}, person);
     });
 }
 
