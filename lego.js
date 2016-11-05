@@ -35,21 +35,16 @@ exports.select = function () {
 
     return function select(collection) {
         return collection.map(function (person) {
-            return properties.reduce(function (newPerson, property) {
-                return selectProperties(person, newPerson, property);
-            }, {});
+            for (var key in person) {
+                if (properties.indexOf(key) === -1) {
+                    delete person[key];
+                }
+            }
+
+            return person;
         });
     };
 };
-
-function selectProperties(person, newPerson, property) {
-    if (!person.hasOwnProperty(property)) {
-        return newPerson;
-    }
-    newPerson[property] = person[property];
-
-    return newPerson;
-}
 
 exports.filterIn = function (property, values) {
 
@@ -63,15 +58,12 @@ exports.filterIn = function (property, values) {
 };
 
 exports.sortBy = function (property, order) {
+    order = order === 'asc' ? 1 : -1;
 
     return function sortBy(collection) {
         var sortCollection = collection.sort(function (a, b) {
-            return a[property] <= b[property] ? -1 : 1;
+            return a[property] <= b[property] ? -1 * Number(order) : 1 * Number(order);
         });
-
-        if (order === 'desc') {
-            return sortCollection.reverse();
-        }
 
         return sortCollection;
     };
