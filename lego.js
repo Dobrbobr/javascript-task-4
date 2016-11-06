@@ -62,7 +62,14 @@ exports.sortBy = function (property, order) {
 
     return function sortBy(collection) {
         var sortCollection = collection.sort(function (a, b) {
-            return a[property] <= b[property] ? -1 * Number(order) : 1 * Number(order);
+            if (a[property] < b[property]) {
+                return -1 * Number(order);
+            }
+            if (a[property] > b[property]) {
+                return 1 * Number(order);
+            }
+
+            return 0;
         });
 
         return sortCollection;
