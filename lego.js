@@ -35,13 +35,14 @@ exports.select = function () {
 
     return function select(collection) {
         return collection.map(function (person) {
-            for (var key in person) {
-                if (properties.indexOf(key) === -1) {
-                    delete person[key];
+            return properties.reduce(function (newPerson, property) {
+                if (!person.hasOwnProperty(property)) {
+                    return newPerson;
                 }
-            }
+                newPerson[property] = person[property];
 
-            return person;
+                return newPerson;
+            }, {});
         });
     };
 };
@@ -58,21 +59,19 @@ exports.filterIn = function (property, values) {
 };
 
 exports.sortBy = function (property, order) {
-    order = order === 'asc' ? 1 : -1;
+    var key = order === 'asc' ? 1 : -1;
 
     return function sortBy(collection) {
-        var sortCollection = collection.sort(function (a, b) {
+        return collection.sort(function (a, b) {
             if (a[property] < b[property]) {
-                return -1 * Number(order);
+                return -1 * key;
             }
             if (a[property] > b[property]) {
-                return 1 * Number(order);
+                return key;
             }
 
             return 0;
         });
-
-        return sortCollection;
     };
 };
 
