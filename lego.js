@@ -1,5 +1,9 @@
 'use strict';
 
+/**
+ * Сделано задание на звездочку
+ * Реализованы методы or и and
+ */
 exports.isStar = false;
 var PRIORITIES = {
     'filterIn': 1,
@@ -15,6 +19,12 @@ function clone(collection) {
     });
 }
 
+/**
+ * Запрос к коллекции
+ * @param {Array} collection
+ * @params {...Function} – Функции для запроса
+ * @returns {Array}
+ */
 exports.query = function (collection) {
     var functions = [].slice.call(arguments, 1);
     var copyCollection = clone(collection);
@@ -30,6 +40,11 @@ exports.query = function (collection) {
     return copyCollection;
 };
 
+/**
+ * Выбор полей
+ * @params {...String}
+ * @returns {Function}
+ */
 exports.select = function () {
     var properties = [].slice.call(arguments);
 
@@ -47,6 +62,12 @@ exports.select = function () {
     };
 };
 
+/**
+ * Фильтрация поля по массиву значений
+ * @param {String} property – Свойство для фильтрации
+ * @param {Array} values – Доступные значения
+ * @returns {Function}
+ */
 exports.filterIn = function (property, values) {
 
     return function filterIn(collection) {
@@ -58,6 +79,12 @@ exports.filterIn = function (property, values) {
     };
 };
 
+/**
+ * Сортировка коллекции по полю
+ * @param {String} property – Свойство для фильтрации
+ * @param {String} order – Порядок сортировки (asc - по возрастанию; desc – по убыванию)
+ * @returns {Function}
+ */
 exports.sortBy = function (property, order) {
     var key = order === 'asc' ? 1 : -1;
 
@@ -75,6 +102,12 @@ exports.sortBy = function (property, order) {
     };
 };
 
+/**
+ * Форматирование поля
+ * @param {String} property – Свойство для фильтрации
+ * @param {Function} formatter – Функция для форматирования
+ * @returns {Function}
+ */
 exports.format = function (property, formatter) {
     return function format(collection) {
         return collection.map(function (person) {
@@ -88,6 +121,11 @@ exports.format = function (property, formatter) {
     };
 };
 
+/**
+ * Ограничение количества элементов в коллекции
+ * @param {Number} count – Максимальное количество элементов
+ * @returns {Function}
+ */
 exports.limit = function (count) {
 
     return function limit(collection) {
@@ -98,10 +136,20 @@ exports.limit = function (count) {
 
 if (exports.isStar) {
 
+    /**
+     * Фильтрация, объединяющая фильтрующие функции
+     * @star
+     * @params {...Function} – Фильтрующие функции
+     */
     exports.or = function () {
         return;
     };
 
+    /**
+     * Фильтрация, пересекающая фильтрующие функции
+     * @star
+     * @params {...Function} – Фильтрующие функции
+     */
     exports.and = function () {
         return;
     };
